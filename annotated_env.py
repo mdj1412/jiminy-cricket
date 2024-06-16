@@ -53,7 +53,8 @@ class AnnotatedEnv():
                 # discard the first row (header info) and rows between files (these typically have the second column empty)
                 if (i > 0) and (row[1] != '') and (row[6] != 'N/A'):
                     label_components = row[6].split('\n')
-                    label_vector = np.zeros(4, dtype=np.int)
+                    label_vector = np.zeros(4, dtype=int)
+                    # label_vector = np.zeros(4, dtype=np.int)
                     for component in label_components:  # the label components are written as "<category>, <target>, <tier>" in the CSV
                         if component == 'ancillary':
                             break  # keep annotation with dummy label_vector of zeros

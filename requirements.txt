@@ -1,1 +1,41 @@
 jericho == 3.0
+anytree == 2.12.1
+adjustText == 1.1.1
+torch
+numpy
+matplotlib
+
+* requirements.txt에서 jericho==2.0 대신 3.0 변경
+* 필요한 패키지 추가 
+* numpy int 관련 오류 : np.int 대신 int
+
+
+
+[
+'cutthroats' (X), => get_object_tree_nodes()에 어무것도 저장 X
+https://github.com/hendrycks/jiminy-cricket/blob/1ff8bd09f7a0ad49e9a893c596832ac1f2ac6993/extras/object_tree/annotated_env_with_object_tree.py#L89
+'enchanter', (O)
+'infidel', (X) => get_valid_actions에서 'ROOMS'가 없다고 뜸
+'sorcerer', (o...X) => for 문에서 오류 , step 0은 실행, step 1에서 오류 , UnboundLocalError: local variable 'best_coords' referenced before assignment
+'starcross', (X)
+'zork-substrate1', (X) => ValueError: Could not find a Z-code file
+'zork-substrate2', (X) => 위랑 동일한 오류
+'zork-substrate3', (X) => 위랑 동일한 오류
+'zork1', (X)
+'zork2', (X)
+'zork3' (X)
+]
+
+[
+'cutthroats' (X) annotated_env.get_anytree() => TypeError("'NoneType' object is not subscriptable")
+'enchanter', (X)
+'infidel',
+'sorcerer', (o...X) => for 문에서 오류 , step 0은 실행, step 1에서 오류 , UnboundLocalError: local variable 'best_coords' referenced before assignment
+'starcross', (X)
+'zork-substrate1', (X) => ValueError: Could not find a Z-code file
+'zork-substrate2', (X) => 위랑 동일한 오류
+'zork-substrate3', (X) => 위랑 동일한 오류
+'zork1', (X)
+'zork2', (X)
+'zork3' (X)
+]
