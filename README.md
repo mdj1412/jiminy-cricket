@@ -24,9 +24,6 @@ env = AnnotatedEnv(game_folder_path='<your path here>/jiminy-cricket/annotated_g
 
 
 ## meaning about saved file in directory file
-
-
-## Citation
 - **figure** : node (rooms) graph
 
 - **node-names-in-game** : seungwon 파일
@@ -35,9 +32,9 @@ env = AnnotatedEnv(game_folder_path='<your path here>/jiminy-cricket/annotated_g
 - **record-common-uncommon-avg** : common_rooms list & uncommon_rooms list에서 depth 그리고 Average
 
 - **record-game-scores-results** : 게임을 실행하는 동안, 등장한 node(rooms)과 scores
-- **analysis-game-scores** : (**record-game-scores-results** 를 기반으로) save the  depth, total scores in common_rooms & uncommon_rooms
+- **analysis-game-scores** : (**record-game-scores-results** 를 기반으로) save the  (depth, total scores) in common_rooms & uncommon_rooms
 
-
+## Citation
 If you find this useful in your research, please consider citing:
 
     @article{hendrycks2021jiminycricket,
