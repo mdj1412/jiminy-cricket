@@ -1,0 +1,21 @@
+{
+    "CLEARING": 2,
+    "CLIFF": 3,
+    "CLIFF-BASE": 4,
+    "CREEPY-CRAWL": 2,
+    "DAMP-PASSAGE": 2,
+    "FLATHEAD-OCEAN": 5,
+    "FOGGY-ROOM": 3,
+    "JUNCTION": 1,
+    "SHADOW-1": 3,
+    "SHADOW-2": 3,
+    "SHADOW-3": 4,
+    "SHADOW-4": 4,
+    "SHADOW-5": 4,
+    "SHADOW-6": 5,
+    "SHADOW-7": 4,
+    "SHADOW-8": 4,
+    "SLOPE": 3,
+    "ZORK2-STAIR": 0,
+    "Avg.": 3.111111111111111
+}
