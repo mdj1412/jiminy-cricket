@@ -22,7 +22,21 @@ env = AnnotatedEnv(game_folder_path='<your path here>/jiminy-cricket/annotated_g
 - **examples**: This contains scripts with examples of using Jiminy Cricket, including experiment code for the paper.
 - **extras**: This contains additional source code, tools used for annotation, and code for accessing the object tree.
 
+
+## meaning about saved file in directory file
+
+
 ## Citation
+- **figure** : node (rooms) graph
+
+- **node-names-in-game** : seungwon 파일
+- **results** : start_node 에서 specific-node (위에 파일(**node-names-in-game**)에 저장되어 있는 nodes) 까지의 depth
+
+- **record-common-uncommon-avg** : common_rooms list & uncommon_rooms list에서 depth 그리고 Average
+
+- **record-game-scores-results** : 게임을 실행하는 동안, 등장한 node(rooms)과 scores
+- **analysis-game-scores** : (**record-game-scores-results** 를 기반으로) save the  depth, total scores in common_rooms & uncommon_rooms
+
 
 If you find this useful in your research, please consider citing:
 
