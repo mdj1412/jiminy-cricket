@@ -1,14 +1,20 @@
-from extras.object_tree.annotated_env_with_object_tree import AnnotatedEnvWithObjectTree
+# referenced by https://github.com/hendrycks/jiminy-cricket/blob/main/extras/object_tree/object_tree_examples.ipynb
+from pprint import pprint
+import time
+import os
+import json
 import sys
 sys.path.insert(0,'..')
-from game_info import game_info
+from collections import deque
+
 from adjustText import adjust_text
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from pprint import pprint
-import time
-import os
+
+from extras.object_tree.annotated_env_with_object_tree import AnnotatedEnvWithObjectTree
+from game_info import game_info
+from count_depth import calculate_depth, find_nodeName2index, find_depth
 
 def main1(game):
     annotated_env = AnnotatedEnvWithObjectTree(f'./extras/object_tree/annotated_games_with_object_tree/{game}', seed=1)
@@ -61,7 +67,7 @@ def main2(game):
     '''Example application: Visualizing the game state'''
     annotated_env = AnnotatedEnvWithObjectTree(f'./extras/object_tree/annotated_games_with_object_tree/{game}')
     nodes = annotated_env.get_object_tree_nodes()
-    annotated_env.get_anytree()
+    print (annotated_env.get_anytree())
 
     # Now let's use force-directed graph drawing to make a prettier visualization.
     room_list = sorted(list(annotated_env.room_dicts.keys()))
@@ -75,6 +81,7 @@ def main2(game):
                         'WEST': np.array([-1, 0]), 'NE': np.array([1, 1]), 'NW': np.array([-1, 1]),
                         'SE': np.array([1, -1]), 'SW': np.array([-1, -1])}
 
+    # Step 1:
     for i in range(num_rooms):
         directions = annotated_env.room_dicts[room_list[i]]['directions']
         for dir_tuple in directions:
@@ -90,6 +97,51 @@ def main2(game):
     adj = adj * (1 - torch.eye(num_rooms))
 
 
+    if game=="zork1":
+        import ast
+
+        # Count items which item equals 0 or 1
+        num_ones = torch.sum(adj == 1).item()
+        num_zeros = torch.sum(adj == 0).item()
+        print(f"Number of 1s: {num_ones}")
+        print(f"Number of 0s: {num_zeros}")
+
+        print (len(room_list) , adj.shape)
+        assert adj.shape[0] == adj.shape[1] == len(room_list)
+        from IPython import embed; embed()
+        
+        print ("Find depths !")
+        depths = calculate_depth(adj)
+        # check if the matrix is symmetric
+        print (torch.equal(depths, depths.T))
+
+        # find index that is 'WEST-OF-HOUSE'
+        start_node = 'WEST-OF-HOUSE'
+        start_node_index = find_nodeName2index(node_name=start_node, room_list=room_list)
+        print (f"{start_node}'s index is {start_node_index}")
+        
+        # load txt file
+        file_path = 'zork1_analysis.txt'
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read().strip()
+        data_list = ast.literal_eval(content)
+
+        results = {}
+        for node_name in data_list:
+            results[node_name] = find_depth(
+                start_node=start_node_index, end_node=node_name, 
+                room_list=room_list, depths=depths
+            )
+        
+        # save results
+        save_path = os.path.splitext(file_path)[0] + ".json"
+        with open(save_path, 'w', encoding='utf-8') as file:
+            json.dump(results, file, indent=4, ensure_ascii=False)
+
+        from IPython import embed; embed()
+
+
+    # Step 2:
     all_coords = []
     best_loss = np.inf
     for k in range(10):
@@ -103,6 +155,16 @@ def main2(game):
         optimizer = torch.optim.SGD([coords], lr=0.001, weight_decay=0, momentum=0.9)
         for i in range(600):
             pairwise_distances = (coords.unsqueeze(0) - coords.unsqueeze(1)).norm(p=2, dim=-1)
+
+            """
+            total loss : 5
+            
+            (1) Attraction Loss: 연결된 방들 간 거리를 줄이는 손실
+            (2) Repulsion Loss: 모든 노드 간 거리 유지(충돌 방지)
+            (3) Edge Length Regularization: 연결 간 최소/최대 거리 제약
+            (4) Directional Loss: 방 간의 방향 정보를 유지하기 위한 손실
+            (5) Maximum Distance Regularization: 모든 노드 간 최대 거리 제한
+            """
 
             # main graph drawing losses
             attraction_loss = (pairwise_distances.pow(2) * adj).sum()  # spring-like behavior
@@ -153,7 +215,7 @@ def main2(game):
             best_coords = coords.detach().numpy()
             best_initial_coords = initial_coords
 
-    
+    # Step 3:
     # Getting node colors
     node_colors = []
     for i in range(len(room_list)):
@@ -165,6 +227,7 @@ def main2(game):
         room_color = color2 * weight + color1 * (1 - weight)
         node_colors.append(room_color)
 
+    # Step 4: draw figure
     plt.figure(figsize=(18,18))
     fig = plt.figure(figsize=(18,18))
     ax = fig.add_subplot(1, 1, 1)
@@ -187,7 +250,7 @@ def main2(game):
     import datetime
     current_time = datetime.datetime.now()
     time_string = current_time.strftime("%Y-%m-%d_%H-%M-%S")
-    fig.savefig(f'./{game}_{time_string}.jpg', format='jpg')
+    fig.savefig(f'figure/{game}_{time_string}.jpg', format='jpg')
 
 
 
