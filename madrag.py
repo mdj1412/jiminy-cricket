@@ -84,7 +84,7 @@ class NearestNeighborSelector():
             # epsilon, 최소 샘플 개수 설정
             cluster_model = DBSCAN(eps=0.5, min_samples=2)
         elif self.cluster_name == "HDBSCAN":
-            cluster_model = HDBSCAN(eps=0.5, min_samples=2)
+            cluster_model = HDBSCAN(min_cluster_size=5, min_samples=2)
         else: 
             raise NotImplementedError()
         
@@ -106,7 +106,8 @@ class NearestNeighborSelector():
 
         return input_embeddings.detach().cpu()
     
-    def predict_clustering(self, save_file_path, min_samples):
+    def predict_clustering(self, save_file_path, min_samples, cluster_model):
+        assert cluster_model in ['DBSCAN', 'HDBSCAN']
         df_scale = pd.DataFrame({})
 
         # 축소한 차원의 수를 정합니다.
@@ -126,13 +127,18 @@ class NearestNeighborSelector():
 
         for i in range(4):
             # epsilon을 증가시키면서 반복
-            eps = 0.4 * (i + 1)
+            eps = 0.4 * (i + 1) if cluster_model == "DBSCAN" else i+2
 
             # 군집화 및 시각화 과정 자동화
-            model = DBSCAN(eps=eps, min_samples=min_samples)
+            if cluster_model == "DBSCAN":
+                model = DBSCAN(eps=eps, min_samples=min_samples)
+            elif cluster_model == "HDBSCAN":
+                model = HDBSCAN(min_cluster_size=eps, min_samples=min_samples)
+            else:
+                raise NotImplementedError()
 
-            model.fit(self.train_q_embeddings)
-            df_scale['cluster'] = model.fit_predict(self.train_q_embeddings)
+            model.fit(X_embedded)
+            df_scale['cluster'] = model.fit_predict(X_embedded)
             print (f"{eps} {min_samples} : {df_scale['cluster'].values}")
 
             for j in range(-1, df_scale['cluster'].max() + 1):
@@ -148,10 +154,10 @@ class NearestNeighborSelector():
             ax[i // 2, i % 2].set_ylabel('y', size = 12)
 
         # 그림을 저장 (파일명과 경로를 지정)
-        f.savefig(f"madrag-figures/{save_file_path}-min_samples({min_samples}).png", dpi=300, bbox_inches='tight')
+        f.savefig(f"madrag-figures/{cluster_model}/{save_file_path}-min_samples({min_samples}).png", dpi=300, bbox_inches='tight')
         plt.close(f)  # 리소스 해제 및 시각화 중단  
 
-def main(min_samples=12):
+def main(min_samples, cluster_model):
     path = "/MIR_NAS/jerry0110_1/madrag/madrag/processed_data/"
     print (os.listdir(path))
 
@@ -171,24 +177,26 @@ def main(min_samples=12):
     an_n_nns = NearestNeighborSelector(
         "princeton-nlp/unsup-simcse-bert-large-uncased", 
         an_n_list, 
-        cluster_name="DBSCAN", 
+        cluster_name=cluster_model, 
         device='cuda'
     )
     an_n_embeddings = an_n_nns.predict_clustering(
         save_file_path="text_anomal_image_normal",
-        min_samples=min_samples
+        min_samples=min_samples,
+        cluster_model=cluster_model
     )
 
     n_an_list = [item['caption'] for item in n_an_dataset]
     n_an_nns = NearestNeighborSelector(
         "princeton-nlp/unsup-simcse-bert-large-uncased", 
         n_an_list, 
-        cluster_name="DBSCAN", 
+        cluster_name=cluster_model, 
         device='cuda'
     )
     n_an_embeddings = an_n_nns.predict_clustering(
         save_file_path="text_nomal_image_anormal",
-        min_samples=min_samples
+        min_samples=min_samples,
+        cluster_model=cluster_model
     )
 
     print ("finish !")
@@ -199,14 +207,19 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # 2. add arguments to parser
-    parser.add_argument('--min_samples',
+    parser.add_argument('--min-samples',
                         type=int,
                         default=12,
                         help="~")
+    parser.add_argument('--cluster-model',
+                        type=str,
+                        default="DBSCAN",
+                        choices=["DBSCAN", "HDBSCAN"],
+                        help="clustering model")
     
     # 3. parse arguments
     args = parser.parse_args()
 
     # 4. use arguments
     print (args)
-    main(args.min_samples)
+    main(args.min_samples, args.cluster_model)
