@@ -1,4 +1,4 @@
 
         the number of common_rooms during game execution: 5, total-common-score (sum): 60
-        the number of common_rooms during game execution: 15, total-uncommon-score (sum): 315
+        the number of uncommon_rooms during game execution: 15, total-uncommon-score (sum): 315
         
