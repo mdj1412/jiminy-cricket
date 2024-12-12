@@ -1,0 +1,94 @@
+{
+    "CELLAR": {
+        "depth": -1,
+        "scores": [
+            25,
+            10
+        ]
+    },
+    "HIDDEN-CAVE": {
+        "depth": 5,
+        "scores": [
+            20
+        ]
+    },
+    "TREE-ROOM": {
+        "depth": -1,
+        "scores": [
+            15
+        ]
+    },
+    "TOLL-GATE": {
+        "depth": 7,
+        "scores": [
+            20
+        ]
+    },
+    "HOLLOW": {
+        "depth": 13,
+        "scores": [
+            20
+        ]
+    },
+    "STONE-HUT": {
+        "depth": 10,
+        "scores": [
+            25
+        ]
+    },
+    "GUN-EMPLACEMENT": {
+        "depth": 6,
+        "scores": [
+            10
+        ]
+    },
+    "ARCADE": {
+        "depth": 9,
+        "scores": [
+            10
+        ]
+    },
+    "SOOTY-ROOM": {
+        "depth": 7,
+        "scores": [
+            20
+        ]
+    },
+    "DIAL-ROOM": {
+        "depth": -1,
+        "scores": [
+            20
+        ]
+    },
+    "SLANTED-ROOM": {
+        "depth": -1,
+        "scores": [
+            20,
+            25
+        ]
+    },
+    "COVE": {
+        "depth": -1,
+        "scores": [
+            20
+        ]
+    },
+    "LAGOON-FLOOR": {
+        "depth": -1,
+        "scores": [
+            15
+        ]
+    },
+    "MAMMOTH-CAVERN": {
+        "depth": -1,
+        "scores": [
+            20
+        ]
+    },
+    "BELBOZ-HIDEOUT": {
+        "depth": -1,
+        "scores": [
+            20
+        ]
+    }
+}

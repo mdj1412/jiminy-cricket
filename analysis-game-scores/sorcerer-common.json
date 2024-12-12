@@ -1,0 +1,32 @@
+{
+    "YOUR-QUARTERS": {
+        "depth": -1,
+        "scores": [
+            5
+        ]
+    },
+    "BELBOZ-QUARTERS": {
+        "depth": -1,
+        "scores": [
+            15
+        ]
+    },
+    "LIBRARY": {
+        "depth": -1,
+        "scores": [
+            10
+        ]
+    },
+    "LOBBY": {
+        "depth": -1,
+        "scores": [
+            10
+        ]
+    },
+    "TWISTED-FOREST": {
+        "depth": 0,
+        "scores": [
+            20
+        ]
+    }
+}

@@ -1,0 +1,1 @@
+{'ON-LAKE': [1], 'ROOM-8': [1], 'CLIFF-LEDGE': [1], 'SHADOW-7': [1, 1], 'OLD-JEWEL-ROOM': [1], 'CP': [1]}

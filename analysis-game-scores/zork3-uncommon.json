@@ -1,0 +1,32 @@
+{
+    "ON-LAKE": {
+        "depth": 5,
+        "scores": [
+            1
+        ]
+    },
+    "ROOM-8": {
+        "depth": -1,
+        "scores": [
+            1
+        ]
+    },
+    "CLIFF-LEDGE": {
+        "depth": 4,
+        "scores": [
+            1
+        ]
+    },
+    "OLD-JEWEL-ROOM": {
+        "depth": -1,
+        "scores": [
+            1
+        ]
+    },
+    "CP": {
+        "depth": 10,
+        "scores": [
+            1
+        ]
+    }
+}

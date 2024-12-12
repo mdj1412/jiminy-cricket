@@ -1,0 +1,34 @@
+{
+    "KITCHEN": {
+        "depth": 3,
+        "scores": [
+            10
+        ]
+    },
+    "CELLAR": {
+        "depth": 5,
+        "scores": [
+            25
+        ]
+    },
+    "GALLERY": {
+        "depth": 5,
+        "scores": [
+            4
+        ]
+    },
+    "LIVING-ROOM": {
+        "depth": 4,
+        "scores": [
+            6,
+            10,
+            6,
+            15,
+            36,
+            31,
+            5,
+            15,
+            5
+        ]
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "EW-PASSAGE": {
+        "depth": 7,
+        "scores": [
+            5
+        ]
+    },
+    "EGYPT-ROOM": {
+        "depth": 13,
+        "scores": [
+            10
+        ]
+    },
+    "END-OF-RAINBOW": {
+        "depth": 6,
+        "scores": [
+            4,
+            10
+        ]
+    },
+    "TORCH-ROOM": {
+        "depth": 11,
+        "scores": [
+            14
+        ]
+    },
+    "LAND-OF-LIVING-DEAD": {
+        "depth": 13,
+        "scores": [
+            10
+        ]
+    },
+    "LOWER-SHAFT": {
+        "depth": 20,
+        "scores": [
+            13
+        ]
+    },
+    "MACHINE-ROOM": {
+        "depth": 21,
+        "scores": [
+            10
+        ]
+    },
+    "GAS-ROOM": {
+        "depth": 12,
+        "scores": [
+            5
+        ]
+    },
+    "BAT-ROOM": {
+        "depth": 9,
+        "scores": [
+            5
+        ]
+    },
+    "RESERVOIR": {
+        "depth": 10,
+        "scores": [
+            15
+        ]
+    },
+    "ATLANTIS-ROOM": {
+        "depth": 10,
+        "scores": [
+            4
+        ]
+    },
+    "SANDY-CAVE": {
+        "depth": 11,
+        "scores": [
+            5
+        ]
+    },
+    "SANDY-BEACH": {
+        "depth": 10,
+        "scores": [
+            5
+        ]
+    },
+    "UP-A-TREE": {
+        "depth": 3,
+        "scores": [
+            5,
+            6
+        ]
+    },
+    "MAZE-5": {
+        "depth": 8,
+        "scores": [
+            10
+        ]
+    },
+    "TREASURE-ROOM": {
+        "depth": 7,
+        "scores": [
+            25,
+            10
+        ]
+    },
+    "PATH": {
+        "depth": 2,
+        "scores": [
+            1
+        ]
+    },
+    "LOUD-ROOM": {
+        "depth": 9,
+        "scores": [
+            10
+        ]
+    }
+}
