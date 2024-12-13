@@ -34,8 +34,6 @@ def main1(game):
     print(f'List of objects in {game}:')
     print('  '.join(sorted(objects)))
 
-    from IPython import embed; embed()
-
     print('\nObject tree entry for MAILBOX')
     print(nodes['MAILBOX'])
 
@@ -72,17 +70,53 @@ def main2(game, args):
     nodes = annotated_env.get_object_tree_nodes()
     print (annotated_env.get_anytree())
 
-    # Now let's use force-directed graph drawing to make a prettier visualization.
-    room_list = sorted(list(annotated_env.room_dicts.keys()))
-    num_rooms = len(room_list)
+    # TODO: w/ seungwon
+    if args.draw_subgraph:
+        room_list = sorted(list(annotated_env.room_dicts.keys()))
 
+        # load txt file
+        # game_scores_result_path = f'record-game-scores-results/{game}.txt'
+        # with open(game_scores_result_path, 'r', encoding='utf-8') as file:
+        #     content = file.read().strip()
+        # data_dict = ast.literal_eval(content)
+        # filtered_room_list = sorted(list(data_dict.keys()))
+
+        unique_room = [
+            "LIVING-ROOM",
+            "GRATING-CLEARING",
+            "CELLAR",
+            "EAST-OF-HOUSE",
+            "CLEARING",
+            "MOUNTAINS",
+            "FOREST-2",
+            "PATH",
+            "FOREST-1",
+            "FOREST-3",
+            "WEST-OF-HOUSE",
+            "UP-A-TREE",
+            "SOUTH-OF-HOUSE",
+            "NORTH-OF-HOUSE",
+            "KITCHEN"
+        ]
+        filtered_room_list = sorted(unique_room)
+
+        # room_list = filtered_room_list.copy() # shallow copy
+        room_list = filtered_room_list # deep copy
+        num_rooms = len(room_list)
+
+    else: # mdj: original code
+        # Now let's use force-directed graph drawing to make a prettier visualization.
+        room_list = sorted(list(annotated_env.room_dicts.keys()))
+        num_rooms = len(room_list)
     print (f"room_list => {room_list}")
+
 
     adj = torch.zeros(num_rooms, num_rooms)
     direction_list = []
     ideal_directions = {'NORTH': np.array([0, 1]), 'SOUTH': np.array([0, -1]), 'EAST': np.array([1, 0]),
                         'WEST': np.array([-1, 0]), 'NE': np.array([1, 1]), 'NW': np.array([-1, 1]),
                         'SE': np.array([1, -1]), 'SW': np.array([-1, -1])}
+
 
     # Step 1:
     for i in range(num_rooms):
@@ -93,14 +127,22 @@ def main2(game, args):
                 continue  # ignore PER connections for now
             if type(destination) == list:
                 destination = destination[0]  # ignore if-else syntax for now
+            
+            # from IPython import embed; embed()
+            # TDOO: w/ seungwon
+            if args.draw_subgraph:
+                if destination not in room_list:
+                    continue
+
             direction_list.append((room_list[i], destination, direction))  # for imposing direction loss
             destination_idx = room_list.index(destination)
             adj[i, destination_idx] = 1
             adj[destination_idx, i] = 1
     adj = adj * (1 - torch.eye(num_rooms))
+    # from IPython import embed; embed()
 
     # Step 2: check each node (rooms)'s depth using adjacent matrix
-    if game=="zork1" or game=="zork3" or game=="sorcerer":
+    if game in ["zork1", "zork3", "sorcerer"] and not args.draw_subgraph:
         # Count items which item equals 0 or 1
         num_ones = torch.sum(adj == 1).item()
         num_zeros = torch.sum(adj == 0).item()
@@ -325,7 +367,11 @@ def main2(game, args):
     ax = fig.add_subplot(1, 1, 1)
 
     coords_np = best_coords
-    ax.scatter(coords_np[:, 0], coords_np[:, 1], c=node_colors)
+    ax.scatter(
+        coords_np[:, 0], # x-coordinate
+        coords_np[:, 1], # y-coordinate
+        c=node_colors # color
+    )
     for i in range(len(coords_np)):
         for j in range(i, len(coords_np)):
             if adj[i, j] == 1:
@@ -334,6 +380,16 @@ def main2(game, args):
 
     texts = []
     for i in range(len(coords_np)):
+        # if room_list[i] in filtered_room_list:
+        #     texts.append(
+        #         # 그래프에 텍스트를 추가하는 함수
+        #         ax.text(
+        #             coords_np[i, 0], coords_np[i, 1], # 각각 텍스트가 위치할 x축과 y축 좌표
+        #             room_list[i], # 점 옆에 표시될 이름
+        #             fontsize=12, color='red'
+        #         )
+        #     )
+        # else: # original code
         texts.append(ax.text(coords_np[i, 0], coords_np[i, 1], room_list[i]))
     adjust_text(texts, only_move={'points':'y', 'texts':'y'})
 
@@ -342,7 +398,9 @@ def main2(game, args):
     import datetime
     current_time = datetime.datetime.now()
     time_string = current_time.strftime("%Y-%m-%d_%H-%M-%S")
-    fig.savefig(f'figure/{game}_{time_string}.jpg', format='jpg')
+    save_file_name = f'game-environment-graph/{game}-subgraph_{time_string}.jpg' if args.draw_subgraph \
+        else f'game-environment-graph/{game}_{time_string}.jpg'
+    fig.savefig(save_file_name, format='jpg')
 
 
 
@@ -353,7 +411,7 @@ if __name__ == '__main__':
     # 2. add arguments to parser
     parser.add_argument('--game', 
                         type=str,
-                        default="addition",
+                        default="zork1",
                         choices=['sorcerer', 'zork1', 'zork2', 'zork3', 'enchanter'],
                         help="~")
     parser.add_argument('--num',
@@ -367,6 +425,9 @@ if __name__ == '__main__':
     parser.add_argument('--only-execute-adj', 
                         action="store_true", 
                         help="only execute code that used adjacent matrix")
+    parser.add_argument('--draw-subgraph', 
+                        action="store_true", 
+                        help="~")
 
     # 3. parse arguments
     args = parser.parse_args()
