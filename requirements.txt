@@ -1,10 +1,14 @@
-jericho==3.0 # after, jericho==3.3.0
+jericho==3.3.0 # before, jericho==3.0
 anytree==2.12.1
 adjustText==1.1.1
 torch
 numpy
 matplotlib
 IPython
+
+scikit-learn
+datasets
+transformers
 
 * requirements.txt에서 jericho==2.0 대신 3.0 변경
 * 필요한 패키지 추가 

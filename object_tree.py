@@ -369,14 +369,13 @@ if __name__ == '__main__':
     # 4. use arguments
     print (args)
 
-
     # check the possible games
     path = "./extras/object_tree/annotated_games_with_object_tree"
     print (os.listdir(path))
 
     # game_list = os.listdir(path)
     # game_list = ['sorcerer']
-    game_list = ['sorcerer', 'zork1', 'zork2', 'zork3']
+    game_list = ['sorcerer', 'zork1', 'zork2', 'zork3']#, 'enchanter']
     
     for game in game_list:
         print (f"\n\n==================\nstart game: {game} \n==================\n\n")
