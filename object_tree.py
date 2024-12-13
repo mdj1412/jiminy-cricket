@@ -351,6 +351,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # 2. add arguments to parser
+    parser.add_argument('--game', 
+                        type=str,
+                        default="addition",
+                        choices=['sorcerer', 'zork1', 'zork2', 'zork3', 'enchanter'],
+                        help="~")
     parser.add_argument('--num',
                         type=int,
                         default=10,
@@ -375,7 +380,11 @@ if __name__ == '__main__':
 
     # game_list = os.listdir(path)
     # game_list = ['sorcerer']
-    game_list = ['sorcerer', 'zork1', 'zork2', 'zork3']#, 'enchanter']
+    game_list = ['sorcerer', 'zork1', 'zork2', 'zork3', 'enchanter']
+    assert args.game in game_list
+
+    main2(args.game, args)
+    exit()
     
     for game in game_list:
         print (f"\n\n==================\nstart game: {game} \n==================\n\n")
